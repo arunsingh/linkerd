@@ -1,4 +1,4 @@
-package io.buoyant.linkerd.protocol.http
+package io.buoyant.linkerd.protocol.http.istio
 
 import com.twitter.finagle.buoyant.H2
 import com.twitter.finagle.http.{Request, Response}
