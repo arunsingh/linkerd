@@ -13,7 +13,6 @@ import io.buoyant.linkerd.protocol.h2.H2LoggerConfig
 import io.buoyant.router.context.DstBoundCtx
 
 class IstioLogger(val mixerClient: MixerClient, params: Stack.Params) extends Filter[Request, Response, Request, Response] with IstioLoggerBase {
-  private[this] val log = Logger()
 
   def apply(req: Request, svc: Service[Request, Response]) = {
     val elapsed = Stopwatch.start()
