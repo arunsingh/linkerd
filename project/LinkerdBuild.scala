@@ -133,7 +133,11 @@ object LinkerdBuild extends Base {
       .withTests()
 
     val k8s = projectDir("namer/k8s")
-      .dependsOn(LinkerdBuild.k8s, LinkerdBuild.istio, core)
+      .dependsOn(LinkerdBuild.k8s, core)
+      .withTests()
+
+    val istio = projectDir("namer/istio")
+      .dependsOn(LinkerdBuild.istio, core)
       .withTests()
 
     val marathon = projectDir("namer/marathon")
@@ -151,7 +155,7 @@ object LinkerdBuild extends Base {
       .withLib(Deps.zkCandidate)
       .withTests()
 
-    val all = aggregateDir("namer", core, consul, curator, fs, k8s, marathon, serversets, zkLeader)
+    val all = aggregateDir("namer", core, consul, curator, fs, k8s, istio, marathon, serversets, zkLeader)
   }
 
   val admin = projectDir("admin")
@@ -446,8 +450,12 @@ object LinkerdBuild extends Base {
       .withTests()
 
     val k8s = projectDir("interpreter/k8s")
-        .dependsOn(Namer.core, LinkerdBuild.k8s, LinkerdBuild.istio, perHost, subnet)
+        .dependsOn(Namer.core, LinkerdBuild.k8s, perHost, subnet)
         .withTests()
+
+    val istio = projectDir("interpreter/istio")
+      .dependsOn(Namer.core, LinkerdBuild.istio, perHost, subnet)
+      .withTests()
 
     val all = aggregateDir("interpreter", fs, k8s, mesh, namerd, perHost, subnet)
   }
@@ -579,8 +587,8 @@ object LinkerdBuild extends Base {
 
     val BundleProjects = Seq[ProjectReference](
       admin, core, main, configCore,
-      Namer.consul, Namer.fs, Namer.k8s, Namer.marathon, Namer.serversets, Namer.zkLeader, Namer.curator,
-      Interpreter.fs, Interpreter.k8s, Interpreter.mesh, Interpreter.namerd, Interpreter.perHost, Interpreter.subnet,
+      Namer.consul, Namer.fs, Namer.k8s, Namer.istio, Namer.marathon, Namer.serversets, Namer.zkLeader, Namer.curator,
+      Interpreter.fs, Interpreter.k8s, Interpreter.istio, Interpreter.mesh, Interpreter.namerd, Interpreter.perHost, Interpreter.subnet,
       Protocol.h2, Protocol.http, Protocol.mux, Protocol.thrift, Protocol.thriftMux,
       Announcer.serversets,
       Telemetry.adminMetricsExport, Telemetry.core, Telemetry.influxdb, Telemetry.prometheus, Telemetry.recentRequests, Telemetry.statsd, Telemetry.tracelog, Telemetry.zipkin,
@@ -672,6 +680,7 @@ object LinkerdBuild extends Base {
   val namerCurator = Namer.curator
   val namerFs = Namer.fs
   val namerK8s = Namer.k8s
+  val namerIstio = Namer.istio
   val namerMarathon = Namer.marathon
   val namerServersets = Namer.serversets
   val namerZkLeader = Namer.zkLeader
@@ -696,6 +705,7 @@ object LinkerdBuild extends Base {
   val interpreter = Interpreter.all
   val interpreterFs = Interpreter.fs
   val interpreterK8s = Interpreter.k8s
+  val interpreterIstio = Interpreter.istio
   val interpreterMesh = Interpreter.mesh
   val interpreterNamerd = Interpreter.namerd
   val interpreterPerHost = Interpreter.perHost
